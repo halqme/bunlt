@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
+import packageJson from "./package.json" with { type: "json" };
+
 import { run, service } from "./index";
 
 type SecretOptions = {
@@ -58,7 +60,7 @@ describe("run", () => {
     const output = await captureOutput(() => run(["version"], store));
 
     expect(output.result).toBe(0);
-    expect(output.stdout).toEqual(["0.1.1"]);
+    expect(output.stdout).toEqual([packageJson.version]);
     expect(output.stderr).toEqual([]);
   });
 
