@@ -155,9 +155,7 @@ export async function run(
   }
 
   const handler =
-    commandName === undefined
-      ? undefined
-      : commandHandlers[commandName as CommandName];
+    commandName === undefined ? undefined : commandHandlers[commandName as CommandName];
 
   if (!handler || !name || extraArgs.length > 0) {
     console.error(usage);
