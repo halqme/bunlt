@@ -5,7 +5,7 @@ A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 ## Usage
 
 ```bash
-bun install -g bunlt
+bun install -g @halqme/bunlt
 ```
 
 ### From Source
