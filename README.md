@@ -1,8 +1,8 @@
-# bunlt
+# Minimam Bun Secrets API Wrapper
 
-Bun の Secrets API を使って、ローカルの認証情報を管理する CLI です。
+A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 
-## 使い方
+## Usage
 
 ```bash
 bun install
@@ -21,11 +21,11 @@ bun run index.ts delete openrouter
 # deleted: openrouter
 ```
 
-パッケージをリンクすると `bunlt` コマンドとして実行できます。
+Link the package to use the `bunlt` command directly:
 
 ```bash
 bun link
 bunlt has openrouter
 ```
 
-`set` は対話ターミナルでは入力を `*` で隠し、パイプからの入力にも対応します。空の Secret は保存できません。
+`set` masks interactive input with `*` and also accepts piped input. Empty secrets are rejected.
