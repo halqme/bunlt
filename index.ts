@@ -105,17 +105,23 @@ async function readInteractiveSecret(): Promise<string> {
   });
 }
 
-async function readSecret(): Promise<string> {
+type SecretReader = () => Promise<string>;
+
+async function readSecretFromInput(): Promise<string> {
   if (process.stdin.isTTY && typeof process.stdin.setRawMode === "function") {
     return readInteractiveSecret();
   }
   return readPipedSecret();
 }
 
-type CommandHandler = (name: string, store: SecretStore) => Promise<number>;
+type CommandHandler = (
+  name: string,
+  store: SecretStore,
+  readSecret: SecretReader,
+) => Promise<number>;
 
 const commandHandlers = {
-  set: async (name: string, store: SecretStore): Promise<number> => {
+  set: async (name: string, store: SecretStore, readSecret: SecretReader): Promise<number> => {
     const value = await readSecret();
     if (value.length === 0) {
       console.error("secret must not be empty");
@@ -151,6 +157,7 @@ type CommandName = keyof typeof commandHandlers;
 export async function run(
   args: readonly string[] = Bun.argv.slice(2),
   store: SecretStore = secrets,
+  readSecret: SecretReader = readSecretFromInput,
 ): Promise<number> {
   const [commandName, name, ...extraArgs] = args;
 
@@ -176,7 +183,7 @@ export async function run(
     return 1;
   }
 
-  return handler(name, store);
+  return handler(name, store, readSecret);
 }
 
 if (import.meta.main) {

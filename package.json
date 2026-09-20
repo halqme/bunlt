@@ -25,10 +25,19 @@
   "type": "module",
   "module": "index.ts",
   "scripts": {
+    "check": "bun run lint && bun run format:check && bun run test && bun run typecheck",
+    "format": "biome format --write .",
+    "format:check": "oxfmt .",
+    "lint": "oxlint .",
+    "prepare": "husky",
+    "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "husky": "^9.1.7",
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0",
     "typescript": "^7"
   }
 }
