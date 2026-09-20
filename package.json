@@ -2,6 +2,19 @@
   "name": "bunlt",
   "version": "0.1.1",
   "private": false,
+  "description": "Minimal CLI wrapper around Bun.secrets",
+  "keywords": [
+    "bun",
+    "cli",
+    "credential",
+    "keychain",
+    "secrets"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/halqme/bunlt.git"
+  },
   "bin": {
     "bunlt": "index.ts"
   },
@@ -15,9 +28,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
+    "@types/bun": "latest",
     "typescript": "^7"
   }
 }
