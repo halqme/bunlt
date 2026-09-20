@@ -37,18 +37,25 @@ function createStore(value: string | null = null) {
 
 async function captureOutput<T>(callback: () => Promise<T>) {
   const stdout: string[] = [];
+  const stdoutWrites: string[] = [];
   const stderr: string[] = [];
   const originalLog = console.log;
   const originalError = console.error;
+  const originalStdoutWrite = Bun.stdout.write;
 
   console.log = (...args: unknown[]) => stdout.push(args.join(" "));
   console.error = (...args: unknown[]) => stderr.push(args.join(" "));
+  Bun.stdout.write = (value) => {
+    stdoutWrites.push(typeof value === "string" ? value : new TextDecoder().decode(value));
+    return typeof value === "string" ? value.length : value.byteLength;
+  };
 
   try {
-    return { result: await callback(), stderr, stdout };
+    return { result: await callback(), stderr, stdout, stdoutWrites };
   } finally {
     console.log = originalLog;
     console.error = originalError;
+    Bun.stdout.write = originalStdoutWrite;
   }
 }
 
@@ -67,7 +74,8 @@ describe("run", () => {
     const output = await captureOutput(() => run(["get", "token"], store));
 
     expect(output.result).toBe(0);
-    expect(output.stdout).toEqual(["secret-value"]);
+    expect(output.stdout).toEqual([]);
+    expect(output.stdoutWrites).toEqual(["secret-value"]);
     expect(output.stderr).toEqual([]);
     expect(calls.get).toEqual([{ name: "token", service }]);
   });
