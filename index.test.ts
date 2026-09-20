@@ -46,8 +46,8 @@ async function captureOutput<T>(callback: () => Promise<T>) {
   console.log = (...args: unknown[]) => stdout.push(args.join(" "));
   console.error = (...args: unknown[]) => stderr.push(args.join(" "));
   Bun.stdout.write = (value) => {
-    stdoutWrites.push(typeof value === "string" ? value : new TextDecoder().decode(value));
-    return typeof value === "string" ? value.length : value.byteLength;
+    if (typeof value === "string") stdoutWrites.push(value);
+    return Promise.resolve(0);
   };
 
   try {
