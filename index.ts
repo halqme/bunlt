@@ -8,6 +8,7 @@ type SecretStore = Pick<typeof secrets, "get" | "set" | "delete">;
 
 const usage = `Usage:
   bunlt set <name>
+  bunlt get <name>
   bunlt has <name>
   bunlt delete <name>`;
 
@@ -121,7 +122,7 @@ export async function run(
     !command ||
     !name ||
     extraArgs.length > 0 ||
-    !["set", "has", "delete"].includes(command)
+    !["set", "get", "has", "delete"].includes(command)
   ) {
     console.error(usage);
     return 1;
@@ -131,6 +132,16 @@ export async function run(
     const value = await readSecret();
     await store.set({ service, name, value });
     console.log(`stored: ${name}`);
+    return 0;
+  }
+
+  if (command === "get") {
+    const value = await store.get({ service, name });
+    if (value === null) {
+      console.error(`not found: ${name}`);
+      return 1;
+    }
+    console.log(value);
     return 0;
   }
 

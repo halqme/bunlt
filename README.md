@@ -11,6 +11,9 @@ bun run index.ts set openrouter
 # Secret: ********
 # stored: openrouter
 
+bun run index.ts get openrouter
+# your-secret
+
 bun run index.ts has openrouter
 # yes
 
