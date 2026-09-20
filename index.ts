@@ -107,35 +107,20 @@ async function readSecret(): Promise<string> {
   return readPipedSecret();
 }
 
-export async function run(
-  args: readonly string[] = Bun.argv.slice(2),
-  store: SecretStore = secrets,
-): Promise<number> {
-  const [command, name, ...extraArgs] = args;
+type CommandHandler = (name: string, store: SecretStore) => Promise<number>;
 
-  if (command === "-h" || command === "--help") {
-    console.log(usage);
-    return 0;
-  }
-
-  if (
-    !command ||
-    !name ||
-    extraArgs.length > 0 ||
-    !["set", "get", "has", "delete"].includes(command)
-  ) {
-    console.error(usage);
-    return 1;
-  }
-
-  if (command === "set") {
+const commandHandlers = {
+  set: async (name: string, store: SecretStore): Promise<number> => {
     const value = await readSecret();
+    if (value.length === 0) {
+      console.error("secret must not be empty");
+      return 1;
+    }
     await store.set({ service, name, value });
     console.log(`stored: ${name}`);
     return 0;
-  }
-
-  if (command === "get") {
+  },
+  get: async (name: string, store: SecretStore): Promise<number> => {
     const value = await store.get({ service, name });
     if (value === null) {
       console.error(`not found: ${name}`);
@@ -143,17 +128,43 @@ export async function run(
     }
     console.log(value);
     return 0;
-  }
-
-  if (command === "has") {
+  },
+  has: async (name: string, store: SecretStore): Promise<number> => {
     const value = await store.get({ service, name });
     console.log(value === null ? "no" : "yes");
     return 0;
+  },
+  delete: async (name: string, store: SecretStore): Promise<number> => {
+    await store.delete({ service, name });
+    console.log(`deleted: ${name}`);
+    return 0;
+  },
+} satisfies Record<string, CommandHandler>;
+
+type CommandName = keyof typeof commandHandlers;
+
+export async function run(
+  args: readonly string[] = Bun.argv.slice(2),
+  store: SecretStore = secrets,
+): Promise<number> {
+  const [commandName, name, ...extraArgs] = args;
+
+  if (commandName === "-h" || commandName === "--help") {
+    console.log(usage);
+    return 0;
   }
 
-  await store.delete({ service, name });
-  console.log(`deleted: ${name}`);
-  return 0;
+  const handler =
+    commandName === undefined
+      ? undefined
+      : commandHandlers[commandName as CommandName];
+
+  if (!handler || !name || extraArgs.length > 0) {
+    console.error(usage);
+    return 1;
+  }
+
+  return handler(name, store);
 }
 
 if (import.meta.main) {
