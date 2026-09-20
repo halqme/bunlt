@@ -7,6 +7,9 @@ A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 ```bash
 bun install
 
+bun run index.ts version
+# 0.1.1
+
 bun run index.ts set openrouter
 # Secret: ********
 # stored: openrouter

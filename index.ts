@@ -2,11 +2,16 @@
 
 import { secrets } from "bun";
 
+import packageJson from "./package.json" with { type: "json" };
+
+const VERSION = packageJson.version;
+
 export const service = "foo.0w0.bunlt";
 
 type SecretStore = Pick<typeof secrets, "get" | "set" | "delete">;
 
 const usage = `Usage:
+  bunlt version
   bunlt set <name>
   bunlt get <name>
   bunlt has <name>
@@ -151,6 +156,15 @@ export async function run(
 
   if (commandName === "-h" || commandName === "--help") {
     console.log(usage);
+    return 0;
+  }
+
+  if (commandName === "version") {
+    if (name !== undefined || extraArgs.length > 0) {
+      console.error(usage);
+      return 1;
+    }
+    console.log(VERSION);
     return 0;
   }
 
