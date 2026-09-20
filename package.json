@@ -5,6 +5,10 @@
   "bin": {
     "bunlt": "index.ts"
   },
+  "files": [
+    "index.ts",
+    "README.md"
+  ],
   "type": "module",
   "module": "index.ts",
   "scripts": {
