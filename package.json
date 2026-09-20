@@ -1,11 +1,12 @@
 {
   "name": "bunlt",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
+  "bin": {
+    "bunlt": "index.ts"
+  },
   "type": "module",
   "module": "index.ts",
-  "bin": {
-    "bunlt": "./index.ts"
-  },
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
