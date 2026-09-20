@@ -2,7 +2,7 @@
 
 import { secrets } from "bun";
 
-export const service = "dev.halqme.secret";
+export const service = "foo.0w0.bunlt";
 
 type SecretStore = Pick<typeof secrets, "get" | "set" | "delete">;
 
