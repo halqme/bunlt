@@ -68,7 +68,7 @@ async function readInteractiveSecret(): Promise<string> {
           finish();
           return;
         } else if (character === "\u0003") {
-          finish(new Error("入力をキャンセルしました"));
+          finish(new Error("Input canceled"));
           return;
         } else if (character === "\u0004") {
           finish();
