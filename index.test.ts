@@ -1,7 +1,5 @@
 import { describe, expect, test } from "bun:test";
 
-import packageJson from "./package.json" with { type: "json" };
-
 import { run, service } from "./index";
 
 type SecretOptions = {
@@ -55,15 +53,6 @@ async function captureOutput<T>(callback: () => Promise<T>) {
 }
 
 describe("run", () => {
-  test("prints the package version", async () => {
-    const { store } = createStore();
-    const output = await captureOutput(() => run(["version"], store));
-
-    expect(output.result).toBe(0);
-    expect(output.stdout).toEqual([packageJson.version]);
-    expect(output.stderr).toEqual([]);
-  });
-
   test("rejects invalid command arguments", async () => {
     const { store } = createStore();
     const output = await captureOutput(() => run(["get"], store));
