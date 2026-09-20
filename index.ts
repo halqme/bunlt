@@ -137,7 +137,7 @@ const commandHandlers = {
       console.error(`not found: ${name}`);
       return 1;
     }
-    console.log(value);
+    await Bun.stdout.write(value);
     return 0;
   },
   has: async (name: string, store: SecretStore): Promise<number> => {

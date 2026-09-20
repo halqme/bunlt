@@ -1,6 +1,6 @@
 {
   "name": "@halqme/bunlt",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": false,
   "description": "Minimal CLI wrapper around Bun.secrets",
   "keywords": [
