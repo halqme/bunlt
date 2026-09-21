@@ -1,4 +1,4 @@
-# Minimam Bun Secrets API Wrapper
+# Minimal Bun Secrets API Wrapper
 
 A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 
@@ -6,6 +6,7 @@ A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 
 ```bash
 bun install -g @halqme/bunlt
+bunlt --help
 ```
 
 ### From Source
@@ -16,7 +17,7 @@ gh repo clone halqme/bunlt
 bun install
 
 bun run index.ts version
-# 0.1.1
+# 0.2.0
 
 bun run index.ts set openrouter
 # Secret: ********
