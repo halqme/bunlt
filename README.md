@@ -4,32 +4,27 @@ A minimal CLI wrapper around Bun's Secrets API for managing local credentials.
 
 ## Usage
 
+Install `bunlt` globally and see the available commands:
+
 ```bash
-bun install -g @halqme/bunlt
+bun add -g @halqme/bunlt
 bunlt --help
 ```
 
-### From Source
+Store and manage a secret:
 
 ```bash
-gh repo clone halqme/bunlt
-
-bun install
-
-bun run index.ts version
-# 0.2.0
-
-bun run index.ts set openrouter
+bunlt set openrouter
 # Secret: ********
 # stored: openrouter
 
-bun run index.ts get openrouter
-# your-secret
-
-bun run index.ts has openrouter
+bunlt has openrouter
 # yes
 
-bun run index.ts delete openrouter
+bunlt get openrouter
+# your-secret
+
+bunlt delete openrouter
 # deleted: openrouter
 ```
 
